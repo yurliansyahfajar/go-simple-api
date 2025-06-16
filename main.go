@@ -2,10 +2,14 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/yurliansyahfajar/go-simple-api/db"
 	"github.com/yurliansyahfajar/go-simple-api/models"
 )
 
 func main() {
+
+	db.InitDB()
+
 	server := gin.Default()
 
 	server.GET("/events", getEvents)
