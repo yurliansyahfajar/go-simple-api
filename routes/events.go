@@ -94,3 +94,30 @@ func updateEvent(c *gin.Context) {
 		"event":   updatedEvent,
 	})
 }
+
+func deleteEvent(c *gin.Context) {
+	eventId, err := strconv.ParseInt(c.Param("id"), 10, 64)
+
+	if err != nil {
+		c.JSONP(400, gin.H{"message": "Failed fetch event with current id, please try again"})
+		return
+	}
+
+	event, err := models.GetEventById(eventId)
+
+	if err != nil {
+		c.JSON(500, gin.H{"message": "Failed fetch event, please try again."})
+		return
+	}
+
+	err = event.DeleteEvent()
+
+	if err != nil {
+		c.JSON(500, gin.H{"message": "Failed delete event, please try again."})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Event deleted!",
+	})
+}
