@@ -34,13 +34,13 @@ func (e *Event) Save() error {
 		return fmt.Errorf("error exec insert: %w", err)
 	}
 
-	id, err := result.LastInsertId()
+	eventId, err := result.LastInsertId()
 
 	if err != nil {
 		return fmt.Errorf("error call last insert ID: %w", err)
 	}
 
-	e.ID = id
+	e.ID = eventId
 	return nil
 }
 
