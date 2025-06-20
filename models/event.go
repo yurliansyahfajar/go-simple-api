@@ -46,7 +46,6 @@ func (e *Event) Save() error {
 
 func GetAllEvents() ([]Event, error) {
 	query := `SELECT * FROM events`
-
 	rows, err := db.DB.Query(query)
 
 	if err != nil {
