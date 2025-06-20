@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yurliansyahfajar/go-simple-api/db"
+	"github.com/yurliansyahfajar/go-simple-api/utils"
 )
 
 type User struct {
@@ -23,7 +24,13 @@ func (u *User) Save() error {
 
 	defer stmt.Close()
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	hashedPassowrd, err := utils.HashPassword(u.Password)
+
+	if err != nil {
+		return fmt.Errorf("hashing password error: %w", err)
+	}
+
+	result, err := stmt.Exec(u.Email, hashedPassowrd)
 
 	if err != nil {
 		return fmt.Errorf("error exec insert: %w", err)
