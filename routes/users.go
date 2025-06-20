@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yurliansyahfajar/go-simple-api/models"
+	"github.com/yurliansyahfajar/go-simple-api/utils"
 )
 
 func signup(c *gin.Context) {
@@ -48,5 +49,12 @@ func login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, gin.H{"message": "Login Successful"})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+
+	if err != nil {
+		c.JSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(201, gin.H{"message": "Login Successful", "token": token})
 }
