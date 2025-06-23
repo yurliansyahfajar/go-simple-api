@@ -33,6 +33,13 @@ func getEvent(c *gin.Context) {
 }
 
 func createEvent(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(401, gin.H{"message": "unauthorize user"})
+		return
+	}
+
 	var event models.Event
 
 	// read from request.body
