@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yurliansyahfajar/go-simple-api/models"
+	"github.com/yurliansyahfajar/go-simple-api/utils"
 )
 
 func getEvents(c *gin.Context) {
@@ -40,10 +41,16 @@ func createEvent(c *gin.Context) {
 		return
 	}
 
-	var event models.Event
+	err := utils.VerifyToken(token)
 
+	if err != nil {
+		c.JSON(401, gin.H{"message": "unauthorize user"})
+		return
+	}
+
+	var event models.Event
 	// read from request.body
-	err := c.ShouldBindJSON(&event)
+	err = c.ShouldBindJSON(&event)
 
 	if err != nil {
 		c.JSON(400, gin.H{"message": "Could not parse request data."})
