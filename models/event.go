@@ -116,3 +116,35 @@ func (e *Event) DeleteEvent() error {
 	return err
 
 }
+
+func (e *Event) Register(userId int64) error {
+	query := `INSTER INTO registration(user_id, event_id) VALUES (?, ?)`
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return fmt.Errorf("prepare statement error: %w", err)
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+
+	return err
+}
+
+func (e *Event) CancelRegistration(userId int64) error {
+	query := `DELETE FROM registration WHERE user_id = ? AND event_id = ?`
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return fmt.Errorf("prepare statement error: %w", err)
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+
+	return err
+}
